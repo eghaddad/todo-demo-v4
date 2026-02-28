@@ -1,3 +1,21 @@
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy all package files first
+COPY package*.json ./
+COPY apps/api/package*.json ./apps/api/
+
+# Install all dependencies
+RUN npm ci
+
+# Copy source code
+COPY . .
+
+# Build the API
+RUN npm run build --workspace=apps/api
+
+# Production stage
 FROM node:20-alpine
 
 WORKDIR /app
@@ -6,20 +24,18 @@ WORKDIR /app
 COPY package*.json ./
 COPY apps/api/package*.json ./apps/api/
 
-# Install dependencies
-RUN npm ci
+# Install production dependencies only
+RUN npm ci --omit=dev
 
-# Copy source
-COPY . .
+# Copy built application from builder
+COPY --from=builder /app/apps/api/dist ./apps/api/dist
+COPY --from=builder /app/apps/api/package*.json ./apps/api/
 
-# Build
-RUN npm run build --workspace=apps/api
-
-# Set working directory to API
+# Set working directory
 WORKDIR /app/apps/api
 
 # Expose port
 EXPOSE 3000
 
 # Start command
-CMD ["npm", "run", "start:prod"]
+CMD ["node", "dist/main.js"]

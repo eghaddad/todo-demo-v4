@@ -1,14 +1,14 @@
 import { Controller, Get } from '@nestjs/common';
-import { InjectConnection } from '@nestjs/typeorm';
-import { Connection } from 'typeorm';
+import { InjectDataSource } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
 
 @Controller('api/health')
 export class HealthController {
-  constructor(@InjectConnection() private readonly connection: Connection) {}
+  constructor(@InjectDataSource() private readonly dataSource: DataSource) {}
 
   @Get()
-  check() {
-    const dbStatus = this.connection.isInitialized
+  async check() {
+    const dbStatus = this.dataSource.isInitialized
       ? 'connected'
       : 'disconnected';
     return {
