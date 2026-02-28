@@ -1,35 +1,22 @@
-FROM node:20-alpine AS builder
-
-WORKDIR /app
-
-# Copy all package files
-COPY package*.json ./
-COPY apps/api/package*.json apps/api/nest-cli.json apps/api/tsconfig*.json ./apps/api/
-
-# Install dependencies
-RUN npm ci
-
-# Copy source code
-COPY apps/api/src ./apps/api/src
-
-# Build the API
-WORKDIR /app/apps/api
-RUN npm run build
-
-# Production stage
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Install production dependencies
+# Copy API package files
 COPY apps/api/package*.json ./
-RUN npm ci --omit=dev
+COPY apps/api/nest-cli.json apps/api/tsconfig*.json ./
 
-# Copy built app
-COPY --from=builder /app/apps/api/dist ./dist
+# Install dependencies
+RUN npm install
+
+# Copy source
+COPY apps/api/src ./src
+
+# Build
+RUN npm run build
 
 # Expose port
 EXPOSE 3000
 
-# Start command
-CMD ["node", "dist/main.js"]
+# Start
+CMD ["npm", "run", "start:prod"]
