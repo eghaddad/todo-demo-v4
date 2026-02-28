@@ -1,0 +1,32 @@
+{
+  "tech_stack": {
+    "backend": "nestjs",
+    "frontend": "react",
+    "database": "postgresql",
+    "orm": "typeorm"
+  },
+  "entities_generated": [
+    "todo.entity.ts"
+  ],
+  "routes_generated": [
+    "todos.controller.ts",
+    "health.controller.ts"
+  ],
+  "structure": {
+    "apps/api": true,
+    "apps/web": true
+  },
+  "source_artifacts": {
+    "architecture_decision": "sha256:6a1015b1e51886c46de8d2f9efe2046edd255f1437e76b57960ac2979a265a56",
+    "domain_model": "sha256:e3774e758fb66a061b06ac46f33beadc2656defa49062791c62b781ff5f42d3d",
+    "technical_design": "sha256:dc6fa738b0e9b494a12a72e6b36bafa23a4827e3151477ce774f7dfd12e40949"
+  },
+  "generated_at": "2026-02-28T13:47:00Z",
+  "monorepo": true,
+  "modules": [
+    "TodosModule",
+    "HealthModule"
+  ],
+  "dto_count": 2,
+  "validation": "class-validator"
+}
