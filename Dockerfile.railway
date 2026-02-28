@@ -2,37 +2,31 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# Copy all package files first
+# Copy all package files
 COPY package*.json ./
-COPY apps/api/package*.json ./apps/api/
+COPY apps/api/package*.json apps/api/nest-cli.json apps/api/tsconfig*.json ./apps/api/
 
-# Install all dependencies
+# Install dependencies
 RUN npm ci
 
 # Copy source code
-COPY . .
+COPY apps/api/src ./apps/api/src
 
 # Build the API
-RUN npm run build --workspace=apps/api
+WORKDIR /app/apps/api
+RUN npm run build
 
 # Production stage
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
-COPY apps/api/package*.json ./apps/api/
-
-# Install production dependencies only
+# Install production dependencies
+COPY apps/api/package*.json ./
 RUN npm ci --omit=dev
 
-# Copy built application from builder
-COPY --from=builder /app/apps/api/dist ./apps/api/dist
-COPY --from=builder /app/apps/api/package*.json ./apps/api/
-
-# Set working directory
-WORKDIR /app/apps/api
+# Copy built app
+COPY --from=builder /app/apps/api/dist ./dist
 
 # Expose port
 EXPOSE 3000
