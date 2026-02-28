@@ -1,4 +1,12 @@
 {
-  "projectId": "01817a02-9230-4eeb-b063-dc9bb47882f6",
-  "environmentId": "ef85a447-65b0-4aa6-bc8f-50fd43f2179b"
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "builder": "NIXPACKS"
+  },
+  "deploy": {
+    "healthcheckPath": "/api/health",
+    "healthcheckTimeout": 120,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 3
+  }
 }
