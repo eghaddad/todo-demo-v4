@@ -1,12 +1,4 @@
 {
-  "$schema": "https://railway.app/railway.schema.json",
-  "build": {
-    "builder": "NIXPACKS",
-    "buildCommand": "npm install && npm run build --workspace=apps/api"
-  },
-  "deploy": {
-    "startCommand": "cd apps/api && npm run start:prod",
-    "restartPolicyType": "ON_FAILURE",
-    "restartPolicyMaxRetries": 10
-  }
+  "projectId": "36199008-ba51-4450-92a5-cdee54a96518",
+  "environmentId": "35dac291-7def-4639-8108-9102d5749c8d"
 }
